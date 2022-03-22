@@ -3,3 +3,4 @@ dist/
 .parcel-cache/
 .idea/
 .iml/
+/web-sockets/web-sockets.iml
