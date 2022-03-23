@@ -39,10 +39,10 @@ function ChatApplication({ username }) {
   const [ws, setWs] = useState();
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3000");
+    const ws = new WebSocket("ws://" + window.location.host);
     ws.onmessage = (event) => {
       const {author, message} = JSON.parse(event.data);
-      setChatLog(oldState => [...oldState, {author, message}])
+      setChatLog((oldState) => [...oldState, {author, message}])
     };
     setWs(ws);
 
