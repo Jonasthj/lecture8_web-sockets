@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 
 function Login({ onLogin }) {
@@ -26,7 +26,7 @@ function Login({ onLogin }) {
   );
 }
 
-function ChatMessage({chat: {author, message}}) {
+function ChatMessage({ chat: { author, message } }) {
   return (
     <div>
       <strong>{author}: </strong>
@@ -36,6 +36,14 @@ function ChatMessage({chat: {author, message}}) {
 }
 
 function ChatApplication({ username }) {
+  const [ws, setWs] = useState();
+
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:3000");
+    setWs(ws);
+
+  }, []);
+
   const [chatLog, setChatLog] = useState([
     {
       author: "Petter",
@@ -55,7 +63,7 @@ function ChatApplication({ username }) {
 
   function handleNewMessage(event) {
     event.preventDefault();
-    setChatLog([...chatLog, {author: username, message }]);
+    setChatLog([...chatLog, { author: username, message }]);
     setMessage("");
   }
 
@@ -69,7 +77,7 @@ function ChatApplication({ username }) {
       </main>
       <footer>
         <form onSubmit={handleNewMessage}>
-          <input value={message} onChange={e => setMessage(e.target.value)}/>
+          <input value={message} onChange={(e) => setMessage(e.target.value)} />
           <button>Submit</button>
         </form>
       </footer>
