@@ -14,7 +14,7 @@ function Login({ onLogin }) {
       <h1>Log in</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Username:{" "}
+          Username:
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -26,14 +26,65 @@ function Login({ onLogin }) {
   );
 }
 
+function ChatMessage({chat: {author, message}}) {
+  return (
+    <div>
+      <strong>{author}: </strong>
+      {message}
+    </div>
+  );
+}
+
+function ChatApplication({ username }) {
+  const [chatLog, setChatLog] = useState([
+    {
+      author: "Petter",
+      message: "Yo!",
+    },
+    {
+      author: "Kjartan",
+      message: "Hei!",
+    },
+    {
+      author: "Sigrid",
+      message: "Halla!",
+    },
+  ]);
+
+  const [message, setMessage] = useState("");
+
+  function handleNewMessage(event) {
+    event.preventDefault();
+    setChatLog([...chatLog, {author: username, message }]);
+    setMessage("");
+  }
+
+  return (
+    <div className={"app"}>
+      <header>Chat application {username}</header>
+      <main>
+        {chatLog.map((chat, index) => (
+          <ChatMessage key={index} chat={chat} />
+        ))}
+      </main>
+      <footer>
+        <form onSubmit={handleNewMessage}>
+          <input value={message} onChange={e => setMessage(e.target.value)}/>
+          <button>Submit</button>
+        </form>
+      </footer>
+    </div>
+  );
+}
+
 function Application() {
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState("Petter");
 
   if (!username) {
     return <Login onLogin={(username) => setUsername(username)} />;
   }
 
-  return <div>Hello {username}</div>;
+  return <ChatApplication username={username} />;
 }
 
 ReactDOM.render(<Application />, document.getElementById("app"));
