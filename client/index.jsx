@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
 function Login({ onLogin }) {
@@ -39,13 +39,12 @@ function ChatApplication({ username }) {
   const [ws, setWs] = useState();
 
   useEffect(() => {
-    const ws = new WebSocket("ws://" + window.location.host);
+    const ws = new WebSocket(window.location.origin.replace("^http", "ws"));
     ws.onmessage = (event) => {
-      const {author, message} = JSON.parse(event.data);
-      setChatLog((oldState) => [...oldState, {author, message}])
+      const { author, message } = JSON.parse(event.data);
+      setChatLog((oldState) => [...oldState, { author, message }]);
     };
     setWs(ws);
-
   }, []);
 
   const [chatLog, setChatLog] = useState([]);
